@@ -35,13 +35,13 @@ FROM alpine
 LABEL application=todobackend
 
 # Install dependencies
-RUN apk add --no-cache bash mariadb-client-libs
+RUN apk add --no-cache bash mariadb-client-libs jq
 
 # Install Python 3
 RUN apk add --no-cache python3 && \
     python3 -m ensurepip && \
     rm -r /usr/lib/python*/ensurepip && \
-    pip3 --no-cache-dir install --upgrade pip
+    pip3 --no-cache-dir install --upgrade pip awscli
 
 COPY --from=build /build /build
 COPY --from=build /app /app
@@ -49,3 +49,7 @@ WORKDIR /app
 
 RUN pip3 install -r /build/requirements.txt -f /build --no-index --no-cache-dir
 RUN rm -rf /build
+
+COPY entrypoint.sh /usr/bin/entrypoint
+RUN chmod +x /usr/bin/entrypoint
+ENTRYPOINT ["/usr/bin/entrypoint"]
