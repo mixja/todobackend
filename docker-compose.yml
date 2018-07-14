@@ -10,6 +10,8 @@ services:
       context: .
       dockerfile: Dockerfile
       target: test
+    environment:
+      AWS_XRAY_TRACING_NAME: todobackend
   release:
     image: 385605022855.dkr.ecr.us-east-1.amazonaws.com/docker-in-aws/todobackend:latest
     build:
@@ -20,6 +22,7 @@ services:
       MYSQL_HOST: db
       MYSQL_USER: todo
       MYSQL_PASSWORD: password
+      AWS_XRAY_TRACING_NAME: todobackend
   app:
     image: 385605022855.dkr.ecr.us-east-1.amazonaws.com/docker-in-aws/todobackend:${APP_VERSION}
     extends:
