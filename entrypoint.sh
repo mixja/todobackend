@@ -19,5 +19,12 @@ then
   export $(cat /init/environment | xargs)
 fi
 
+# Inject runtime init commands
+if [ -f /init/commands ]
+then
+  echo "Processing commands from /init/commands..."
+  source /init/commands
+fi
+
 # Run application
 exec "$@"
