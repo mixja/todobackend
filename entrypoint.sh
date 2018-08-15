@@ -12,5 +12,12 @@ do
     eval "$vars"
 done
 
+# Inject runtime environment variables
+if [ -f /init/environment ]
+then
+  echo "Processing environment variables from /init/environment..."
+  export $(cat /init/environment | xargs)
+fi
+
 # Run application
 exec "$@"
